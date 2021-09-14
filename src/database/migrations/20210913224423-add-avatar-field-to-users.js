@@ -5,7 +5,7 @@ module.exports = {
       references: { model: 'files', key: 'id' },
       onUpdate: 'CASCADE',
       onDelete: 'SET NULL',
-      aloowNUll: true,
+      allowNull: true,
     });
   },
 
