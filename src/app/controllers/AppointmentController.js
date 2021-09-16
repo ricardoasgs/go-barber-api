@@ -1,5 +1,13 @@
 import * as Yup from 'yup';
-import { parseISO, startOfHour, isBefore } from 'date-fns';
+import {
+  parseISO,
+  startOfHour,
+  isBefore,
+  startOfDay,
+  endOfDay,
+  endOfHour,
+} from 'date-fns';
+import { Op } from 'sequelize';
 import Appointment from '../models/Appointment';
 import User from '../models/User';
 import File from '../models/File';
@@ -61,6 +69,8 @@ class AppointmentController {
 
     const hourStart = startOfHour(parseISO(date));
 
+    const hourEnd = endOfHour(parseISO(date));
+
     /*
     Check for Past Dates
     */
@@ -75,7 +85,9 @@ class AppointmentController {
       where: {
         provider_id,
         canceled_at: null,
-        date: hourStart,
+        date: {
+          [Op.between]: [hourStart, hourEnd],
+        },
       },
     });
 
